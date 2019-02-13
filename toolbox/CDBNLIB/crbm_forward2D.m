@@ -7,11 +7,11 @@ function output = crbm_forward2D(model,layer,data)
 
 
 n = size(data,4);
-x_stride = layer.s_pool(2);
-y_stride = layer.s_pool(1);
+x_stride = int16(layer.s_pool(2));
+y_stride = int16(layer.s_pool(1));
 row = size(model.h_sample,1);
 col = size(model.h_sample,2);
-output = zeros(floor(row/y_stride),floor(col/x_stride),layer.n_map_h,n);
+output = zeros(floor(row/y_stride),floor(col/x_stride),int16(layer.n_map_h),n);
 
 for k = 1:n
     

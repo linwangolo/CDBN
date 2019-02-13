@@ -15,6 +15,7 @@ numCases = size(data, 2);
 
 %这个函数就是建立矩阵，以labels为横坐标，1:numCases为纵坐标的位置值为1，其他位置值为0.
 % 矩阵为M*N，M = max(labels); N = numCases
+
 groundTruth = full(sparse(labels, 1:numCases, 1));
 cost = 0;
 

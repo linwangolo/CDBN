@@ -1,4 +1,4 @@
-function model = crbm2D(layer)
+function [model,err] = crbm2D(layer)
 %------------------------------------------------------------------------------%
 %                  2D convolutional Restricted Boltzmann Machine               %
 % INPUT:                                                                       %
@@ -20,17 +20,17 @@ model.beginAnneal = Inf;
 layer.s_inputdata = [size(layer.inputdata,1),size(layer.inputdata,2)];
 
 % INITIALIZE THE WEIGHTS
-model.W           = 0.01*randn(layer.s_filter(1), layer.s_filter(2), layer.n_map_v, layer.n_map_h);
+model.W           = 0.01*randn(int16(layer.s_filter(1)), int16(layer.s_filter(2)), int16(layer.n_map_v), int16(layer.n_map_h));
 model.dW          = zeros(size(model.W));
-model.v_bias      = zeros(layer.n_map_v, 1);
-model.dV_bias     = zeros(layer.n_map_v, 1);
-model.h_bias      = zeros(layer.n_map_h, 1);
-model.dH_bias     = zeros(layer.n_map_h, 1);
+model.v_bias      = zeros(int16(layer.n_map_v), 1);
+model.dV_bias     = zeros(int16(layer.n_map_v), 1);
+model.h_bias      = zeros(int16(layer.n_map_h), 1);
+model.dH_bias     = zeros(int16(layer.n_map_h), 1);
 model.v_size      = [layer.s_inputdata(1), layer.s_inputdata(2)];
-model.v_input     = zeros(layer.s_inputdata(1), layer.s_inputdata(2), layer.n_map_v,batchsize);          
+model.v_input     = zeros(layer.s_inputdata(1), layer.s_inputdata(2), int16(layer.n_map_v),batchsize);          
 model.h_size      = (layer.s_inputdata - layer.s_filter)./(layer.stride) + 1;
-model.h_input     = zeros(model.h_size(1), model.h_size(2), layer.n_map_h, batchsize);
-model.error       = zeros(layer.n_epoch,1);
+model.h_input     = zeros(int16(model.h_size(1)), int16(model.h_size(2)), int16(layer.n_map_h), batchsize);
+model.error       = zeros(int16(layer.n_epoch),1);
 
 
 % ADD SOME OTHER PARAMETERS FOR TEST
@@ -41,7 +41,7 @@ model.vinc = 0;
 % NEED TO FIX THE STRIDE HERE
 H_out             = ((size(layer.inputdata,1)-layer.s_filter(1))/layer.stride(1)+1)/layer.s_pool(1);
 W_out             = ((size(layer.inputdata,2)-layer.s_filter(2))/layer.stride(2)+1)/layer.s_pool(2);
-model.output      = zeros([H_out, W_out,layer.n_map_h,size(layer.inputdata,4)]);
+model.output      = zeros([H_out, W_out,int16(layer.n_map_h),size(layer.inputdata,4)]);
 
 % CREATING BATCH DATA
 N                 = size(layer.inputdata,4);
@@ -115,6 +115,14 @@ for epoch = 1:layer.n_epoch
     model.error(epoch) = err;
     
     fprintf('    epoch %d/%d, reconstruction err %f, sparsity %f\n', epoch,layer.n_epoch,err, mean(sparsity(:)));
+   
+    %===================%
+    if isnan(err)
+        return
+    end
+    %===================%
+
+
     toc;
   
 end

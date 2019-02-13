@@ -1,5 +1,5 @@
 %% CS294A/CS294W Softmax Exercise 
-function softmaxExercise(inputData,labels,inputData_t,labels_t)
+function [acc] =  softmaxExercise(inputData,labels,inputData_t,labels_t)
 %  Instructions
 %  ------------
 % 
@@ -9,7 +9,6 @@ function softmaxExercise(inputData,labels,inputData_t,labels_t)
 %  For this exercise, you will not need to change any code in this file,
 %  or any other files other than those mentioned above.
 %  (However, you may be required to do so in later exercises)
-
 %%======================================================================
 %% STEP 0: Initialise constants and parameters
 %
@@ -18,9 +17,11 @@ function softmaxExercise(inputData,labels,inputData_t,labels_t)
 %  We also initialise some parameters used for tuning the model.
 
 inputSize = size(inputData,1); % Size of input vector (MNIST images are 28x28)
-numClasses = 10;     % Number of classes (MNIST images fall into 10 classes)
+numClasses = 2;     % Number of classes (MNIST images fall into 10 classes)
 
 lambda = 1e-4; % Weight decay parameter
+
+
 
 %%======================================================================
 %% STEP 1: Load data
@@ -49,11 +50,13 @@ DEBUG = false; % Set DEBUG to true when debugging.
 if DEBUG
     inputSize = 8;
     inputData = randn(8, 100);
-    labels = randi(10, 100, 1);
+    labels = randi(2, 100, 1);
 end
 
 % Randomly initialise theta
 theta = 0.005 * randn(numClasses * inputSize, 1);
+
+
 
 %%======================================================================
 %% STEP 2: Implement softmaxCost
@@ -62,6 +65,7 @@ theta = 0.005 * randn(numClasses * inputSize, 1);
 
 [cost, grad] = softmaxCost(theta, numClasses, inputSize, lambda, inputData, labels);
                                      
+
 %%======================================================================
 %% STEP 3: Gradient checking
 %
@@ -85,6 +89,8 @@ if DEBUG
     % When your gradients are correct, congratulations!
 end
 
+
+
 %%======================================================================
 %% STEP 4: Learning parameters
 %
@@ -99,6 +105,8 @@ softmaxModel = softmaxTrain(inputSize, numClasses, lambda, ...
 % Although we only use 100 iterations here to train a classifier for the 
 % MNIST data set, in practice, training for more iterations is usually
 % beneficial.
+
+
 
 %%======================================================================
 %% STEP 5: Testing
@@ -119,6 +127,8 @@ softmaxModel = softmaxTrain(inputSize, numClasses, lambda, ...
 
 acc = mean(labels_t(:) == pred(:));
 fprintf('Accuracy: %0.3f%%\n', acc * 100);
+
+
 
 % Accuracy is the proportion of correctly classified images
 % After 100 iterations, the results for our implementation were:
