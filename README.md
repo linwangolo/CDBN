@@ -1,4 +1,8 @@
-# Convolutional Deep Belief Networks with 'MATLAB','MEX','CUDA' versions
+Before reading the following description, I'm here to appreciate the author of CDBN with MATLAB version firstly. Based on the author's achievement, there are a few adjustments in the model of CDBN with binary type.
+
+# Generalized Convolutional Deep Belief Networks with hyperparameter tunning using gridsearchCV
+
+The original program, 'DemoCDBN_Binary_2D.m', made the layer part unflexible. If you want to add layers, large part of the code need to be modified.
 
 This program is an implementation of Convolutional Deep Belief Networks. In this code, the binary and Gaussian visable types are both supported. In addition, CUDA acceleration is also included. We provide some demo programs to show the usage of the code. 
 
